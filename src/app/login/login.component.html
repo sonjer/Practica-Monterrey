@@ -1,9 +1,6 @@
-<ActionBar title="Groceries"></ActionBar>
-
 <FlexboxLayout>
-    <StackLayout class="form">
-        <Image src="~/images/logo.png"></Image>
-
+    <StackLayout class="form" [class.dark]="!isLoggingIn">
+        <img src="../images/logo.png">
         <TextField hint="Email Address" keyboardType="email"
                    autocorrect="false" autocapitalizationType="none"
                    [(ngModel)]="user.email" class="input input-border"></TextField>

@@ -14,7 +14,7 @@ import { routes, navigatableComponents } from "./app.routing";
         NativeScriptFormsModule,
         NativeScriptHttpClientModule,
         NativeScriptRouterModule,
-        NativeScriptRouterModule.forRoot(routes)
+        NativeScriptRouterModule.forRoot(routes),
     ],
     declarations: [AppComponent,
         ...navigatableComponents],
