@@ -3,6 +3,8 @@ import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { Grocery } from "../shared/grocery/grocery.model";
 import { GroceryService } from "../shared/grocery/grocery.service";
 import { TextField } from "tns-core-modules/ui/text-field";
+import { ListViewEventData, RadListView } from "nativescript-ui-listview";
+import { View } from "tns-core-modules/ui/core/view";
 
 @Component({
     selector: "gr-list",
@@ -14,15 +16,20 @@ import { TextField } from "tns-core-modules/ui/text-field";
 export class ListComponent implements OnInit {
     groceryList: Array<Grocery> = [];
     grocery = "";
+    isLoading = false;
+    listLoaded = false;
     @ViewChild("groceryTextField", { static: false }) groceryTextField: ElementRef;
     constructor(private groceryService: GroceryService) {}
 
     ngOnInit() {
+        this.isLoading = true;
         this.groceryService.load()
             .subscribe((loadedGroceries: []) => {
-                loadedGroceries.forEach((groceryObject: Grocery) => {
+                loadedGroceries.forEach((groceryObject) => {
                     this.groceryList.unshift(groceryObject);
                 });
+                this.isLoading = false;
+                this.listLoaded = true;
             });
     }
 
@@ -50,5 +57,23 @@ export class ListComponent implements OnInit {
                     this.grocery = "";
                 }
             )
+    }
+
+    onSwipeCellStarted(args: ListViewEventData) {
+        var swipeLimits = args.data.swipeLimits;
+        var swipeView = args.object;
+        var rightItem = swipeView.getViewById<View>("delete-view");
+        swipeLimits.right = rightItem.getMeasuredWidth();
+        swipeLimits.left = 0;
+        swipeLimits.threshold = rightItem.getMeasuredWidth() / 2;
+    }
+
+    delete(args: ListViewEventData) {
+        let grocery = <Grocery>args.object.bindingContext;
+        this.groceryService.delete(grocery.id)
+            .subscribe(() => {
+                let index = this.groceryList.indexOf(grocery);
+                this.groceryList.splice(index, 1);
+            });
     }
 }

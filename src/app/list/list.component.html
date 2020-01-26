@@ -3,14 +3,24 @@
 <GridLayout rows="auto, *">
 
     <GridLayout row="0" columns="*, auto" class="add-bar">
-        <TextField #groceryTextField [(ngModel)]="grocery" hint="Enter a grocery item" col="0"></TextField>
-        <img src="../images/add.png" (tap)="add()" col="1">
+        <TextField #groceryTextField hint="Enter a grocery item" col="0">
+        </TextField>
+        <img src="../images/add.png" col="1">
     </GridLayout>
 
-    <RadListView row="1" [items]="groceryList">
+
+    <RadListView row="1" [items]="groceryList" [class.visible]="listLoaded"
+                 swipeActions="true" (itemSwipeProgressStarted)="onSwipeCellStarted($event)">
+
         <ng-template let-item="item">
             <Label [text]="item.name" class="p-15"></Label>
         </ng-template>
-    </RadListView>
+        <GridLayout *tkListItemSwipeTemplate columns="*, auto">
+            <StackLayout id="delete-view" col="1" (tap)="delete($event)" class="delete-view">
+                <img src="../images/delete.png">
+            </StackLayout>
+        </GridLayout>
 
+    </RadListView>
 </GridLayout>
+<ActivityIndicator [busy]="isLoading" [visibility]="isLoading ? 'visible' : 'collapse'" row="1" horizontalAlignment="center" verticalAlignment="center"></ActivityIndicator>
