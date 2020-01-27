@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 
-import { Grocery } from "../shared/grocery/grocery.model";
-import { GroceryService } from "../shared/grocery/grocery.service";
+import { Grocery } from "../shared/tarea/tarea.model";
+import { TareaService } from "../shared/tarea/tarea.service";
 import { TextField } from "tns-core-modules/ui/text-field";
 import { ListViewEventData, RadListView } from "nativescript-ui-listview";
 import { View } from "tns-core-modules/ui/core/view";
@@ -11,7 +11,7 @@ import { View } from "tns-core-modules/ui/core/view";
     moduleId: module.id,
     templateUrl: "./list.component.html",
     styleUrls: ["./list.component.css"],
-    providers: [GroceryService]
+    providers: [TareaService]
 })
 export class ListComponent implements OnInit {
     groceryList: Array<Grocery> = [];
@@ -19,7 +19,7 @@ export class ListComponent implements OnInit {
     isLoading = false;
     listLoaded = false;
     @ViewChild("groceryTextField", { static: false }) groceryTextField: ElementRef;
-    constructor(private groceryService: GroceryService) {}
+    constructor(private groceryService: TareaService) {}
 
     ngOnInit() {
         this.isLoading = true;

@@ -1,10 +1,10 @@
 <FlexboxLayout>
     <StackLayout class="form" [class.dark]="!isLoggingIn">
         <img src="https://art.nativescript-vue.org/NativeScript-Vue-White-Green.png">
-        <TextField hint="Email Address" keyboardType="email"
+        <TextField hint="Direccion de correo" keyboardType="email"
                    autocorrect="false" autocapitalizationType="none"
                    [(ngModel)]="user.email" class="input input-border"></TextField>
-        <TextField hint="Password" secure="true" [(ngModel)]="user.password"
+        <TextField hint="Contraseña" secure="true" [(ngModel)]="user.password"
                    class="input input-border"></TextField>
 
         <Button [text]="isLoggingIn ? 'Sign in' : 'Sign up'"

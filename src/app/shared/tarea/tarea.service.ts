@@ -4,10 +4,10 @@ import { Observable, throwError } from "rxjs";
 import { catchError, map, tap } from "rxjs/operators";
 
 import { Config } from "../config";
-import { Grocery } from "./grocery.model";
+import { Grocery } from "./tarea.model";
 
 @Injectable()
-export class GroceryService {
+export class TareaService {
     baseUrl = Config.apiUrl + "appdata/" + Config.appKey + "/Groceries";
 
     constructor(private http: HttpClient) { }
