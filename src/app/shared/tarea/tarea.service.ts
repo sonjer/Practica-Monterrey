@@ -4,7 +4,7 @@ import { Observable, throwError } from "rxjs";
 import { catchError, map, tap } from "rxjs/operators";
 
 import { Config } from "../config";
-import { Grocery } from "./tarea.model";
+import { Tarea } from "./tarea.model";
 
 @Injectable()
 export class TareaService {
@@ -23,11 +23,11 @@ export class TareaService {
             params: params
         }).pipe(
             map((data: []) => {
-                let groceryList = [];
-                data.forEach((grocery) => {
-                    groceryList.push(new Grocery((<any>grocery)._id, (<any>grocery).Name));
+                let tareaList = [];
+                data.forEach((tarea) => {
+                    tareaList.push(new Tarea((<any>tarea)._id, (<any>tarea).Name));
                 });
-                return groceryList;
+                return tareaList;
             }),
             catchError(this.handleErrors)
         );
@@ -52,7 +52,7 @@ export class TareaService {
             { headers: this.getCommonHeaders() }
         ).pipe(
             map(data => {
-                return new Grocery((<any>data)._id, name);
+                return new Tarea((<any>data)._id, name);
             }),
             catchError(this.handleErrors)
         );

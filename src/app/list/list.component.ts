@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 
-import { Grocery } from "../shared/tarea/tarea.model";
+import { Tarea } from "../shared/tarea/tarea.model";
 import { TareaService } from "../shared/tarea/tarea.service";
 import { TextField } from "tns-core-modules/ui/text-field";
 import { ListViewEventData, RadListView } from "nativescript-ui-listview";
@@ -14,19 +14,19 @@ import { View } from "tns-core-modules/ui/core/view";
     providers: [TareaService]
 })
 export class ListComponent implements OnInit {
-    groceryList: Array<Grocery> = [];
-    grocery = "";
+    tareaList: Array<Tarea> = [];
+    tarea = "";
     isLoading = false;
     listLoaded = false;
-    @ViewChild("groceryTextField", { static: false }) groceryTextField: ElementRef;
-    constructor(private groceryService: TareaService) {}
+    @ViewChild("tareaTextField", { static: false }) tareaTextField: ElementRef;
+    constructor(private tareaService: TareaService) {}
 
     ngOnInit() {
         this.isLoading = true;
-        this.groceryService.load()
+        this.tareaService.load()
             .subscribe((loadedGroceries: []) => {
-                loadedGroceries.forEach((groceryObject) => {
-                    this.groceryList.unshift(groceryObject);
+                loadedGroceries.forEach((tareaObject) => {
+                    this.tareaList.unshift(tareaObject);
                 });
                 this.isLoading = false;
                 this.listLoaded = true;
@@ -34,27 +34,27 @@ export class ListComponent implements OnInit {
     }
 
     add() {
-        if (this.grocery.trim() === "") {
-            alert("Enter a grocery item");
+        if (this.tarea.trim() === "") {
+            alert("Enter a tarea item");
             return;
         }
 
         // Dismiss the keyboard
-        let textField = <TextField>this.groceryTextField.nativeElement;
+        let textField = <TextField>this.tareaTextField.nativeElement;
         textField.dismissSoftInput();
 
-        this.groceryService.add(this.grocery)
+        this.tareaService.add(this.tarea)
             .subscribe(
-                (groceryObject: Grocery) => {
-                    this.groceryList.unshift(groceryObject);
-                    this.grocery = "";
+                (tareaObject: Tarea) => {
+                    this.tareaList.unshift(tareaObject);
+                    this.tarea = "";
                 },
                 () => {
                     alert({
                         message: "An error occurred while adding an item to your list.",
                         okButtonText: "OK"
                     });
-                    this.grocery = "";
+                    this.tarea = "";
                 }
             )
     }
@@ -69,11 +69,11 @@ export class ListComponent implements OnInit {
     }
 
     delete(args: ListViewEventData) {
-        let grocery = <Grocery>args.object.bindingContext;
-        this.groceryService.delete(grocery.id)
+        let tarea = <Tarea>args.object.bindingContext;
+        this.tareaService.delete(tarea.id)
             .subscribe(() => {
-                let index = this.groceryList.indexOf(grocery);
-                this.groceryList.splice(index, 1);
+                let index = this.tareaList.indexOf(tarea);
+                this.tareaList.splice(index, 1);
             });
     }
 }
