@@ -1,4 +1,4 @@
-<ActionBar title="Tareas"></ActionBar>
+<ActionBar title="Tasks"></ActionBar>
 
 <GridLayout rows="auto, *">
 
@@ -9,11 +9,11 @@
     </GridLayout>
 
 
-    <RadListView row="1" [items]="tareaList" [class.visible]="listLoaded"
+    <RadListView row="1" [items]="taskList" [class.visible]="listLoaded"
                  swipeActions="true" (itemSwipeProgressStarted)="onSwipeCellStarted($event)">
 
         <ng-template let-item="item">
-            <Label [text]="item.name" class="p-15"></Label>
+            <Label [text]="item.title" class="p-15"></Label>
         </ng-template>
         <GridLayout *tkListItemSwipeTemplate columns="*, auto">
             <StackLayout id="delete-view" col="1" (tap)="delete($event)" class="delete-view">

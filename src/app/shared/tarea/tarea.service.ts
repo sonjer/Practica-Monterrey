@@ -4,11 +4,11 @@ import { Observable, throwError } from "rxjs";
 import { catchError, map, tap } from "rxjs/operators";
 
 import { Config } from "../config";
-import { Tarea } from "./tarea.model";
+import { Task } from "./tarea.model";
 
 @Injectable()
-export class TareaService {
-    baseUrl = Config.apiUrl + "appdata/" + Config.appKey + "/Groceries";
+export class TaskService {
+    baseUrl = Config.apiUrl ;
 
     constructor(private http: HttpClient) { }
 
@@ -23,11 +23,12 @@ export class TareaService {
             params: params
         }).pipe(
             map((data: []) => {
-                let tareaList = [];
+                let taskList = [];
                 data.forEach((tarea) => {
-                    tareaList.push(new Tarea((<any>tarea)._id, (<any>tarea).Name));
+                    taskList.push(new Task((<any>tarea)._id, (<any>tarea).title));
                 });
-                return tareaList;
+                console.log("load tarea",taskList);
+                return taskList;
             }),
             catchError(this.handleErrors)
         );
@@ -45,14 +46,15 @@ export class TareaService {
         return throwError(error);
     }
 
-    add(name: string) {
+    add(title: string) {
         return this.http.post(
             this.baseUrl,
-            JSON.stringify({ Name: name }),
+            JSON.stringify({ title: title }),
             { headers: this.getCommonHeaders() }
         ).pipe(
             map(data => {
-                return new Tarea((<any>data)._id, name);
+                console.log("data",data);
+                return new Task((<any>data)._id, title);
             }),
             catchError(this.handleErrors)
         );
@@ -61,7 +63,7 @@ export class TareaService {
     delete(id: string) {
         return this.http.delete(
             this.baseUrl + "/" + id,
-            { headers: this.getCommonHeaders() }
+            { headers: this.getCommonHeaders() } 
         ).pipe(
             catchError (this.handleErrors)
         );

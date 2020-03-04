@@ -1,3 +1,3 @@
-export class Tarea {
-    constructor(public id: string, public name: string) {}
+export class Task {
+    constructor(public id: string, public title: string) {}
 }

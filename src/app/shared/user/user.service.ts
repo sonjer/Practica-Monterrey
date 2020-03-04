@@ -17,7 +17,7 @@ export class UserService {
         }
 
         return this.http.post(
-            Config.apiUrl + "user/" + Config.appKey,
+            Config.apiUrl,
             JSON.stringify({
                 username: user.email,
                 email: user.email,
@@ -43,7 +43,7 @@ export class UserService {
 
     login(user: User) {
         return this.http.post(
-            Config.apiUrl + "user/" + Config.appKey + "/login",
+            Config.apiUrl ,
             JSON.stringify({
                 username: user.email,
                 password: user.password

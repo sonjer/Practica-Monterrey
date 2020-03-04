@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 
-import { Tarea } from "../shared/tarea/tarea.model";
-import { TareaService } from "../shared/tarea/tarea.service";
+import { Task } from "../shared/tarea/tarea.model";
+import { TaskService } from "../shared/tarea/tarea.service";
 import { TextField } from "tns-core-modules/ui/text-field";
 import { ListViewEventData, RadListView } from "nativescript-ui-listview";
 import { View } from "tns-core-modules/ui/core/view";
@@ -11,22 +11,23 @@ import { View } from "tns-core-modules/ui/core/view";
     moduleId: module.id,
     templateUrl: "./list.component.html",
     styleUrls: ["./list.component.css"],
-    providers: [TareaService]
+    providers: [TaskService]
 })
 export class ListComponent implements OnInit {
-    tareaList: Array<Tarea> = [];
+    taskList: Array<Task> = [];
     tarea = "";
     isLoading = false;
     listLoaded = false;
     @ViewChild("tareaTextField", { static: false }) tareaTextField: ElementRef;
-    constructor(private tareaService: TareaService) {}
+    constructor(private taskService: TaskService) {}
 
     ngOnInit() {
         this.isLoading = true;
-        this.tareaService.load()
+        this.taskService.load()
             .subscribe((loadedGroceries: []) => {
                 loadedGroceries.forEach((tareaObject) => {
-                    this.tareaList.unshift(tareaObject);
+                    this.taskList.unshift(tareaObject);
+                    console.log("OnInit",this.taskList);
                 });
                 this.isLoading = false;
                 this.listLoaded = true;
@@ -43,10 +44,10 @@ export class ListComponent implements OnInit {
         let textField = <TextField>this.tareaTextField.nativeElement;
         textField.dismissSoftInput();
 
-        this.tareaService.add(this.tarea)
+        this.taskService.add(this.tarea)
             .subscribe(
-                (tareaObject: Tarea) => {
-                    this.tareaList.unshift(tareaObject);
+                (tareaObject: Task) => {
+                    this.taskList.unshift(tareaObject);
                     this.tarea = "";
                 },
                 () => {
@@ -69,11 +70,11 @@ export class ListComponent implements OnInit {
     }
 
     delete(args: ListViewEventData) {
-        let tarea = <Tarea>args.object.bindingContext;
-        this.tareaService.delete(tarea.id)
+        let tarea = <Task>args.object.bindingContext;
+        this.taskService.delete(tarea.id)
             .subscribe(() => {
-                let index = this.tareaList.indexOf(tarea);
-                this.tareaList.splice(index, 1);
+                let index = this.taskList.indexOf(tarea);
+                this.taskList.splice(index, 1);
             });
     }
 }
