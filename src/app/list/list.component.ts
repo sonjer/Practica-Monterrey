@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 
-import { Task } from "../shared/tarea/tarea.model";
-import { TaskService } from "../shared/tarea/tarea.service";
+import { Task } from "../shared/task/task.model";
+import { TaskService } from "../shared/task/task.service";
 import { TextField } from "tns-core-modules/ui/text-field";
 import { ListViewEventData, RadListView } from "nativescript-ui-listview";
 import { View } from "tns-core-modules/ui/core/view";
@@ -14,19 +14,20 @@ import { View } from "tns-core-modules/ui/core/view";
     providers: [TaskService]
 })
 export class ListComponent implements OnInit {
-    taskList: Array<Task> = [];
-    tarea = "";
-    isLoading = false;
-    listLoaded = false;
-    @ViewChild("tareaTextField", { static: false }) tareaTextField: ElementRef;
+
+    taskList: Task[] = [];
+    task:string = "";
+    isLoading:boolean = false;
+    listLoaded:boolean = false;
+    @ViewChild("taskTextField", { static: false }) taskTextField: ElementRef;
     constructor(private taskService: TaskService) {}
 
     ngOnInit() {
         this.isLoading = true;
         this.taskService.load()
-            .subscribe((loadedGroceries: []) => {
-                loadedGroceries.forEach((tareaObject) => {
-                    this.taskList.unshift(tareaObject);
+            .subscribe((loadedTasks: []) => {
+                loadedTasks.forEach((taskObject) => {
+                    this.taskList.unshift(taskObject);
                     console.log("OnInit",this.taskList);
                 });
                 this.isLoading = false;
@@ -35,27 +36,27 @@ export class ListComponent implements OnInit {
     }
 
     add() {
-        if (this.tarea.trim() === "") {
-            alert("Enter a tarea item");
+        if (this.task.trim() === "") {
+            alert("Enter a task item");
             return;
         }
 
         // Dismiss the keyboard
-        let textField = <TextField>this.tareaTextField.nativeElement;
+        let textField = <TextField>this.taskTextField.nativeElement;
         textField.dismissSoftInput();
 
-        this.taskService.add(this.tarea)
+        this.taskService.add(this.task)
             .subscribe(
-                (tareaObject: Task) => {
-                    this.taskList.unshift(tareaObject);
-                    this.tarea = "";
+                (taskObject: Task) => {
+                    this.taskList.unshift(taskObject);
+                    this.task = "";
                 },
                 () => {
                     alert({
                         message: "An error occurred while adding an item to your list.",
                         okButtonText: "OK"
                     });
-                    this.tarea = "";
+                    this.task = "";
                 }
             )
     }
@@ -70,10 +71,10 @@ export class ListComponent implements OnInit {
     }
 
     delete(args: ListViewEventData) {
-        let tarea = <Task>args.object.bindingContext;
-        this.taskService.delete(tarea.id)
+        let task = <Task>args.object.bindingContext;
+        this.taskService.delete(task.id)
             .subscribe(() => {
-                let index = this.taskList.indexOf(tarea);
+                let index = this.taskList.indexOf(task);
                 this.taskList.splice(index, 1);
             });
     }

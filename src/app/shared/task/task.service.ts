@@ -4,11 +4,11 @@ import { Observable, throwError } from "rxjs";
 import { catchError, map, tap } from "rxjs/operators";
 
 import { Config } from "../config";
-import { Task } from "./tarea.model";
+import { Task } from "./task.model";
 
 @Injectable()
 export class TaskService {
-    baseUrl = Config.apiUrl ;
+    baseUrl:string = Config.apiUrl ;
 
     constructor(private http: HttpClient) { }
 
@@ -24,10 +24,10 @@ export class TaskService {
         }).pipe(
             map((data: []) => {
                 let taskList = [];
-                data.forEach((tarea) => {
-                    taskList.push(new Task((<any>tarea)._id, (<any>tarea).title));
+                data.forEach((task) => {
+                    taskList.push(new Task((<any>task)._id, (<any>task).title));
                 });
-                console.log("load tarea",taskList);
+                console.log("load task",taskList);
                 return taskList;
             }),
             catchError(this.handleErrors)

@@ -3,29 +3,31 @@
     padding: 5;
 }
 .add-bar Image {
-    height: 25;
+    height: 40;
     vertical-align: center;
     margin-left: 10;
     margin-right: 10;
 }
 .add-bar TextField {
     padding: 10;
+    color: #000;
 }
 Label {
     background-color: white;
-    border-bottom-width: 1;
-    border-bottom-color: gray;
+    border-bottom-width: 2;
+    border-bottom-color: black;
+    padding: 10;
 }
 
 .delete-view {
-    background-color: #CB1D00;
-    padding: 20;
-}
-.delete-view Image {
-    color: white;
+    background-color: rgb(255, 255, 255)
 }
 
-ListView {
+.delete-view Image {
+    color: whitesmoke;
+}
+
+.ListView {
     opacity: 0;
 }
 .visible {

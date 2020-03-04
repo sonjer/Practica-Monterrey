@@ -3,13 +3,13 @@
 <GridLayout rows="auto, *">
 
     <GridLayout row="0" columns="*, auto" class="add-bar">
-        <TextField #tareaTextField [(ngModel)]="tarea" hint="Inserte una nueva tarea" col="0"></TextField>
+        <TextField #taskTextField [(ngModel)]="task" hint="Insert a new task" col="0"></TextField>
         <img src="https://cdn.icon-icons.com/icons2/1993/PNG/512/add_circle_create_expand_new_plus_icon_123218.png" col="1" (tap)="add()">
 
     </GridLayout>
 
 
-    <RadListView row="1" [items]="taskList" [class.visible]="listLoaded"
+    <RadListView row="1" [items]="taskList" 
                  swipeActions="true" (itemSwipeProgressStarted)="onSwipeCellStarted($event)">
 
         <ng-template let-item="item">
