@@ -4,7 +4,7 @@
 
     <GridLayout row="0" columns="*, auto" class="add-bar">
         <TextField #taskTextField [(ngModel)]="task" hint="Insert a new task" col="0"></TextField>
-        <img src="https://cdn.icon-icons.com/icons2/1993/PNG/512/add_circle_create_expand_new_plus_icon_123218.png" col="1" (tap)="add()">
+        <img src="https://cdn.icon-icons.com/icons2/1993/PNG/512/add_circle_create_expand_new_plus_icon_123218.png" col="1" (tap)="addTask()">
 
     </GridLayout>
 
@@ -16,7 +16,7 @@
             <Label [text]="item.title" class="p-15"></Label>
         </ng-template>
         <GridLayout *tkListItemSwipeTemplate columns="*, auto">
-            <StackLayout id="delete-view" col="1" (tap)="delete($event)" class="delete-view">
+            <StackLayout id="delete-view" col="1" (tap)="deleteTask($event)" class="delete-view">
                 <img src="https://cdn.icon-icons.com/icons2/789/PNG/512/delete_icon-icons.com_65184.png">
             </StackLayout>
         </GridLayout>

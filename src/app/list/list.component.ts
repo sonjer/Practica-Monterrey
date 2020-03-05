@@ -19,13 +19,14 @@ export class ListComponent implements OnInit {
     task:string = "";
     isLoading:boolean = false;
     listLoaded:boolean = false;
+
     @ViewChild("taskTextField", { static: false }) taskTextField: ElementRef;
     constructor(private taskService: TaskService) {}
 
     ngOnInit() {
         this.isLoading = true;
-        this.taskService.load()
-            .subscribe((loadedTasks: []) => {
+        this.taskService.loadTask()
+            .subscribe((loadedTasks: Task[]) => {
                 loadedTasks.forEach((taskObject) => {
                     this.taskList.unshift(taskObject);
                     console.log("OnInit",this.taskList);
@@ -35,7 +36,7 @@ export class ListComponent implements OnInit {
             });
     }
 
-    add() {
+    addTask() {
         if (this.task.trim() === "") {
             alert("Enter a task item");
             return;
@@ -45,7 +46,7 @@ export class ListComponent implements OnInit {
         let textField = <TextField>this.taskTextField.nativeElement;
         textField.dismissSoftInput();
 
-        this.taskService.add(this.task)
+        this.taskService.addTask(this.task)
             .subscribe(
                 (taskObject: Task) => {
                     this.taskList.unshift(taskObject);
@@ -70,12 +71,13 @@ export class ListComponent implements OnInit {
         swipeLimits.threshold = rightItem.getMeasuredWidth() / 2;
     }
 
-    delete(args: ListViewEventData) {
+    deleteTask(args: ListViewEventData) {
         let task = <Task>args.object.bindingContext;
-        this.taskService.delete(task.id)
+        this.taskService.deleteTask(task.id)
             .subscribe(() => {
                 let index = this.taskList.indexOf(task);
                 this.taskList.splice(index, 1);
+                alert(" item deleted");
             });
     }
 }

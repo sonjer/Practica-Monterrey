@@ -12,7 +12,7 @@ export class TaskService {
 
     constructor(private http: HttpClient) { }
 
-    load() {
+    loadTask() {
         // Kinvey-specific syntax to sort the groceries by last modified time. Don’t worry about the details here.
         let params = {
             "sort": "{\"_kmd.lmt\": 1}"
@@ -46,7 +46,7 @@ export class TaskService {
         return throwError(error);
     }
 
-    add(title: string) {
+    addTask(title: string) {
         return this.http.post(
             this.baseUrl,
             JSON.stringify({ title: title }),
@@ -60,7 +60,7 @@ export class TaskService {
         );
     }
 
-    delete(id: string) {
+    deleteTask(id: string) {
         return this.http.delete(
             this.baseUrl + "/" + id,
             { headers: this.getCommonHeaders() } 
